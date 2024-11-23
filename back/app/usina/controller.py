@@ -17,10 +17,9 @@ def get_usinas():
 
 @usina_controller.route('/usinas/<int:id>', methods=['GET'])
 def get_usina(id):
-    limit = request.args.get('limit', 10, type=int)
-    offset = request.args.get('offset', 0, type=int)
     start_date = request.args.get('start_date', None, type=str)
     end_date = request.args.get('end_date', None, type=str)
+    group_by = request.args.get('group_by', None, type=str)
 
-    result = geracao_service.get_geracao_by_usina_id(id_usina=id, limit=limit, offset=offset, start_date=start_date, end_date=end_date)
+    result = geracao_service.get_geracao_by_usina_id(id_usina=id, group_by=group_by, start_date=start_date, end_date=end_date)
     return jsonify(result)

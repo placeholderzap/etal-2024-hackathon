@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:15 # Utilize a versão desejada do PostgreSQL
+    container_name: postgres_local
+    restart: always
+    ports:
+      - "5432:5432" # Mapeia a porta 5432 do container para a máquina local
+    environment:
+      POSTGRES_USER: postgres # Substitua pelo usuário desejado
+      POSTGRES_PASSWORD: postgres # Substitua pela senha desejada
+      POSTGRES_DB: etal # Nome do banco que será criado
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Persistência dos dados
+
+volumes:
+  postgres_data:

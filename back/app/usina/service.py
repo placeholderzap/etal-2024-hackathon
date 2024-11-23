@@ -1,0 +1,21 @@
+# app/services.py
+from app.db import db
+from app.usina.repository import UsinaRepository
+
+class UsinaService:
+    def __init__(self):
+        self.repository = UsinaRepository(db=db)
+
+    def get_usinas(self, limit: int, offset: int):
+        usinas = self.repository.get_all(limit=limit, offset=offset)
+        total = self.repository.get_total()
+        if usinas:
+            return {
+                'count': total,
+                'next': f'/usinas?limit={limit}&offset={offset+1}' if total > offset * limit else None,
+                'previous': f'/usinas?limit={limit}&offset={offset-1}' if offset > 0 else None,
+                'results': [dict(id=u[0], potencia=u[1]) for u in usinas]
+
+            }
+        
+        return {'message': 'Nenhuma usina encontrada'}

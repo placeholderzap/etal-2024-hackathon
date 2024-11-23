@@ -13,5 +13,15 @@ class UsinaRepository:
         except Exception as e:
             print(f"Erro ao buscar usinas: {e}")
             return None
+        
+
+    def get_total(self):
+        try:
+            query = text('SELECT COUNT(*) FROM mv_usina')
+            result = self.db.session.execute(query)
+            return result.fetchone()[0]
+        except Exception as e:
+            print(f"Erro ao buscar total de usinas: {e}")
+            return None
 
    

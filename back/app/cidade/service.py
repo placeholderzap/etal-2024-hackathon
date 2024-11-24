@@ -15,3 +15,20 @@ class CidadeService:
             ]
         
         return {'message': 'Nenhum detalhe encontrado'}
+
+
+    def get_all(self, limit: int, offset: int, search: str):
+        cidades = self.repository.get_all(limit=limit, offset=offset, search=search)
+        total = self.repository.get_total()
+        if cidades:
+            return {
+                'count': total,
+                'next': f'/cidades?limit={limit}&offset={offset+1}' if total > offset * limit else None,
+                'previous': f'/cidades?limit={limit}&offset={offset-1}' if offset > 0 else None,
+                'results': [
+                    dict(id=c[0], nome=c[1], uf=c[2], regiao=c[3])
+                    for c in cidades
+                ]
+            }
+        
+        return {'message': 'Nenhuma cidade encontrada'}

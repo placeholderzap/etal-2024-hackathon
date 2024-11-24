@@ -11,4 +11,11 @@ def get_detalhes_cidade(id_cidade):
     result = cidade_service.get_detalhes_cidade(id_cidade=id_cidade)
     return jsonify(result)
 
+@cidade_controller.route('/cidades', methods=['GET'])
+def get_all():
+    limit = request.args.get('limit', 10, type=int)
+    offset = request.args.get('offset', 0, type=int)
+    search = request.args.get('search', None, type=str)
+    result = cidade_service.get_all(limit=limit, offset=offset, search=search)
+    return jsonify(result)
 

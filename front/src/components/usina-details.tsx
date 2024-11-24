@@ -72,7 +72,7 @@ export function UsinaDetails({ id }: { id: number }) {
   return (
     <div>
       <div className="flex flex-col gap-2 items-start mb-4">
-        <Button variant="outline" onClick={() => push("/")}>
+        <Button variant="outline" onClick={() => push("/usinas")}>
           <ArrowLeft size={16} />
           <span className="font-semibold"> Voltar</span>
         </Button>

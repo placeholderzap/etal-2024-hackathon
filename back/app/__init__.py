@@ -3,6 +3,7 @@ from flask import Flask
 from flask_cors import CORS
 from app.db import db
 from app.usina.controller import usina_controller
+from app.cidade.controller import cidade_controller
 from app.config import Config
 
 def create_app():
@@ -13,5 +14,6 @@ def create_app():
     db.init_app(app)
     
     app.register_blueprint(usina_controller)
+    app.register_blueprint(cidade_controller)
     
     return app

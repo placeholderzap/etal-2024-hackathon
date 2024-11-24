@@ -10,9 +10,10 @@ geracao_service = GeracaoService()
 
 @usina_controller.route('/usinas', methods=['GET'])
 def get_usinas():
+    search = request.args.get('search', None, type=str)
     limit = request.args.get('limit', 10, type=int)
     offset = request.args.get('offset', 0, type=int)
-    result = usina_service.get_usinas(limit=limit, offset=offset)
+    result = usina_service.get_usinas(limit=limit, offset=offset, search=search)
     return jsonify(result)
 
 @usina_controller.route('/usinas/<int:id>', methods=['GET'])
@@ -25,4 +26,9 @@ def get_usina(id):
         group_by = None
 
     result = geracao_service.get_geracao_by_usina_id(id_usina=id, group_by=group_by, start_date=start_date, end_date=end_date)
+    return jsonify(result)
+
+@usina_controller.route('/usinas/<int:id>/endereco', methods=['GET'])
+def get_endereco_by_usina_id(id):
+    result = usina_service.get_endereco_by_usina_id(id=id)
     return jsonify(result)

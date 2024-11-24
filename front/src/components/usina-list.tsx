@@ -6,6 +6,7 @@ import { Button } from "./ui/button";
 import {
   Table,
   TableBody,
+  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -64,22 +65,29 @@ export const UsinaList = ({ usinas, isLoading }: UsinaListProps) => {
       </TableHeader>
 
       <TableBody>
-        {usinas.map((usina) => (
-          <TableRow key={usina.id}>
-            <TableCell>{usina.id}</TableCell>
-            <TableCell>{usina.potencia} kWp</TableCell>
-            <TableCell>
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={() => handleSeeDetails(usina.id)}
-              >
-                <PiFileMagnifyingGlassDuotone size={24} />
-              </Button>
-            </TableCell>
-          </TableRow>
-        ))}
+        {usinas &&
+          usinas.map((usina) => (
+            <TableRow key={usina.id}>
+              <TableCell>{usina.id}</TableCell>
+              <TableCell>{usina.potencia} kWp</TableCell>
+              <TableCell>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => handleSeeDetails(usina.id)}
+                >
+                  <PiFileMagnifyingGlassDuotone size={24} />
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))}
       </TableBody>
+
+      {!usinas && (
+        <TableCaption className="text-black font-medium">
+          Nenhuma usina encontrada
+        </TableCaption>
+      )}
     </Table>
   );
 };

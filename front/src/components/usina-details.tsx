@@ -67,6 +67,8 @@ export function UsinaDetails({ id }: { id: number }) {
     return <p>Error: {error.message}</p>;
   }
 
+  console.log(data);
+
   return (
     <div>
       <div className="flex flex-col gap-2 items-start mb-4">
@@ -105,16 +107,23 @@ export function UsinaDetails({ id }: { id: number }) {
         </div>
 
         <div className="w-full flex gap-4">
-          <Chart data={data.geracao} />
+          {data.geracao && <Chart data={data.geracao} />}
 
           <div className="h-[570px] w-full overflow-y-auto space-y-2">
-            {data.geracao.map((item: Detalhes, index: number) => (
-              <Status
-                key={item.id || index}
-                saude={item.saude}
-                data={item.data}
-              />
-            ))}
+            {data?.geracao ? (
+              data.geracao.map((item: Detalhes, index: number) => (
+                <Status
+                  key={item.id || index}
+                  saude={item.saude}
+                  data={item.data}
+                />
+              ))
+            ) : (
+              <p>
+                Nenhuma geração de energia encontrada para o período
+                selecionado.
+              </p>
+            )}
           </div>
         </div>
       </section>

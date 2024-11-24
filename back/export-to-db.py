@@ -2,7 +2,7 @@ import pandas as pd
 from sqlalchemy import create_engine
 
 MAIN_PATH = "./raw"
-FILE = "endereco"
+FILE = "unidade_consumidora"
 # PostgreSQL
 engine = create_engine('postgresql://postgres:postgres@localhost:5432/etal')
 

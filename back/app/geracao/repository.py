@@ -42,7 +42,6 @@ class GeracaoRepository:
 
             # Ordenando os resultados pela data
             query = text(initial_query + f' ORDER BY data')
-
             # Executando a consulta
             result = self.db.session.execute(query)
             return result.fetchall()

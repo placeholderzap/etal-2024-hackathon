@@ -1,7 +1,10 @@
 interface Detalhes {
   data: string;
-  id: number;
+  id?: number;
   prognostico: number;
   quantidade: number;
-  saude: "ok" | "erro_medicao" | "erro_cadastro";
+  saude: {
+    status: "ok" | "erro_medicao" | "erro_cadastro";
+    eficiencia: number;
+  };
 }

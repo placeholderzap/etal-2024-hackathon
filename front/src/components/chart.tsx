@@ -22,7 +22,6 @@ export const Chart = ({ data }: ChartProps) => {
         date: moment(item.data).format("DD/MM/YYYY"),
         expected: item.prognostico,
         generated: item.quantidade,
-        error: item.saude !== "ok" ? item.saude : undefined,
       })),
     [data]
   );
@@ -39,21 +38,14 @@ export const Chart = ({ data }: ChartProps) => {
             label: "Geração",
             color: "hsl(var(--chart-2))",
           },
-          error: {
-            label: "Saúde",
-            color: "hsl(var(--chart-3))",
-          },
         }}
-        className="h-[800px]"
+        className="h-[600px]"
       >
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart
-            data={formattedData}
-            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-          >
+          <LineChart data={formattedData} margin={{ left: 10, right: 10 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="date" />
-            <YAxis label="kWh" />
+            <YAxis />
             <ChartTooltip content={<ChartTooltipContent />} />
             <Legend />
             <Line
@@ -61,11 +53,11 @@ export const Chart = ({ data }: ChartProps) => {
               strokeWidth={2}
               type="linear"
               dataKey="expected"
-              accentHeight={0}
               stroke="var(--color-expected)"
               name="Prognostico"
             />
             <Line
+              enableBackground={""}
               strokeWidth={1.5}
               type="linear"
               dataKey="generated"

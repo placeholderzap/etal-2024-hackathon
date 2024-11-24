@@ -1,7 +1,5 @@
 "use client";
 
-import moment from "moment";
-
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -12,11 +10,11 @@ import {
 import { cn } from "@/lib/utils";
 import { ptBR } from "date-fns/locale";
 import { Calendar1 } from "lucide-react";
-import { useState } from "react";
+import moment from "moment";
+import { useEffect, useState } from "react";
 import { DateRange } from "react-day-picker";
 
 moment.locale("pt-br");
-
 interface DatePickerProps extends React.ComponentProps<"div"> {
   startDate: string;
   setStartDate: (startDate: string) => void;
@@ -38,17 +36,26 @@ export function DatePicker({
   });
 
   const handleSelect = (range: DateRange | undefined) => {
-    setDate({
-      from: range?.from ? moment(range.from).toDate() : undefined,
-      to: range?.to ? moment(range.to).toDate() : undefined,
-    });
+    setDate(range);
     if (range?.from) {
-      setStartDate(moment(range.from).utc(true).format("YYYY-MM-DD"));
+      setStartDate(moment(range.from).format("YYYY-MM-DD"));
     }
     if (range?.to) {
-      setEndDate(moment(range.to).utc(true).format("YYYY-MM-DD"));
+      setEndDate(moment(range.to).format("YYYY-MM-DD"));
     }
   };
+
+  useEffect(() => {
+    if (startDate) {
+      setDate((prev) => ({ from: moment(startDate).toDate(), to: prev?.to }));
+    }
+  }, [startDate]);
+
+  useEffect(() => {
+    if (endDate) {
+      setDate((prev) => ({ from: prev?.from, to: moment(endDate).toDate() }));
+    }
+  }, [endDate]);
 
   return (
     <div className={cn("grid gap-2", className)}>
@@ -82,7 +89,6 @@ export function DatePicker({
             locale={ptBR}
             initialFocus
             mode="range"
-            defaultMonth={date?.from}
             selected={date}
             onSelect={handleSelect}
             numberOfMonths={2}

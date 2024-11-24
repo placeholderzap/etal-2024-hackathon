@@ -21,5 +21,8 @@ def get_usina(id):
     end_date = request.args.get('end_date', None, type=str)
     group_by = request.args.get('group_by', None, type=str)
 
+    if group_by == 'dia':
+        group_by = None
+
     result = geracao_service.get_geracao_by_usina_id(id_usina=id, group_by=group_by, start_date=start_date, end_date=end_date)
     return jsonify(result)

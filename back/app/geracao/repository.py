@@ -13,12 +13,12 @@ class GeracaoRepository:
             # Mapear os dados agrupados com agregação
             aggregation_mapper = {
                 "mes": {
-                    "select": "AVG(quantidade) AS total_quantidade, AVG(prognostico) AS total_prognostico, DATE(DATE_TRUNC('month', data)) AS data",
-                    "group_by": " GROUP BY DATE(DATE_TRUNC('month', data))"
+                    "select": "AVG(quantidade) AS total_quantidade, AVG(prognostico) AS total_prognostico, DATE_TRUNC('month', data)::date AS data",
+                    "group_by": " GROUP BY DATE_TRUNC('month', data)"
                 },
                 "ano": {
-                    "select": "AVG(quantidade) AS total_quantidade, AVG(prognostico) AS total_prognostico, DATE(DATE_TRUNC('year', data)) AS data",
-                    "group_by": " GROUP BY DATE(DATE_TRUNC('year', data))"
+                    "select": "AVG(quantidade) AS total_quantidade, AVG(prognostico) AS total_prognostico, DATE_TRUNC('year', data)::date AS data",
+                    "group_by": " GROUP BY DATE_TRUNC('year', data)"
                 },
             }
 
@@ -42,8 +42,6 @@ class GeracaoRepository:
 
             # Ordenando os resultados pela data
             query = text(initial_query + f' ORDER BY data')
-
-            print(query)
 
             # Executando a consulta
             result = self.db.session.execute(query)

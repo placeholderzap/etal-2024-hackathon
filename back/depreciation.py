@@ -61,13 +61,12 @@ for row in resultados:
         cursor.execute(query_dinamica)
         resultado = cursor.fetchone()
 
-        # Armazenar a soma no mapper (dicionário) com a chave como 'ano_1', 'ano_2', etc.
+        # Armazenar os dados se houver resultado válido
         if resultado:
-            # Gerar a chave como 'ano_1', 'ano_2', etc.
-            chave = f"ano_{ano_counter}"
+            chave = f'ano_{ano_counter}'
             soma_total = resultado[2]  # Soma total de 12 meses
 
-             # Adicionar ano e geração real
+            # Adicionar o ano relativo ao eixo `anos`
             anos.append(ano_counter)
             geracao_real.append(soma_total)
 
@@ -75,33 +74,45 @@ for row in resultados:
                 # Para o primeiro ano, a geração esperada é igual à geração real
                 geracao_esperada.append(soma_total)
                 desvios_percentuais.append(0)  # Não há desvio no primeiro ano
-
             elif ano_counter == 2:
-                # Para o ano 2, aplicar uma depreciação de 2,5%
-                deprecado_esperado = soma_total * (1 - 0.025)
+                # Para o segundo ano, aplicar uma depreciação de 2,5%
+                deprecado_esperado = geracao_esperada[ano_counter - 2] * (1 - 0.025)
                 geracao_esperada.append(deprecado_esperado)
                 desvio = soma_total - deprecado_esperado
                 percentual_desvio = (desvio / deprecado_esperado) * 100 if deprecado_esperado != 0 else 0
                 desvios_percentuais.append(percentual_desvio)
+                mapper[chave] = {
+                    'start_date': start_date,
+                    'data_fim': data_fim,
+                    'soma_total_12_meses': soma_total,
+                    'desvio_percentual': percentual_desvio
+                }
 
-            elif ano_counter > 2:
-                # Para os anos subsequentes (ano 3 em diante), aplicar uma depreciação de 0,5%
-                deprecado_esperado = soma_total * (1 - 0.005)
+            else:
+                # Para os anos subsequentes (ano 3 em diante), aplicar uma depreciação de 0,5% cumulativa
+                deprecado_esperado = geracao_esperada[ano_counter - 2] * (1 - 0.005)
                 geracao_esperada.append(deprecado_esperado)
                 desvio = soma_total - deprecado_esperado
                 percentual_desvio = (desvio / deprecado_esperado) * 100 if deprecado_esperado != 0 else 0
                 desvios_percentuais.append(percentual_desvio)
+                # Armazenar a soma no mapper (dicionário) com a chave como 'ano_1', 'ano_2', etc.
+                mapper[chave] = {
+                    'start_date': start_date,
+                    'data_fim': data_fim,
+                    'soma_total_12_meses': soma_total,
+                    'desvio_percentual': percentual_desvio
+                }
 
-            # Armazenar a soma no mapper (dicionário) com a chave como 'ano_1', 'ano_2', etc.
-            mapper[chave] = soma_total
+            # Atualizar a variável de soma total
             soma_total_gerada += soma_total
 
-        # Atualizar start_date para o próximo período de 12 meses
-        start_date = data_fim
-        data_fim = start_date + timedelta(days=365)  # Próximo intervalo de 12 meses
+            # Incrementar o contador para o próximo ano válido
+            ano_counter += 1
 
-        # Incrementar o contador para o próximo ano
-        ano_counter += 1
+        # Atualizar as datas para o próximo período de 12 meses
+        start_date = data_fim
+        data_fim = start_date + timedelta(days=365)
+
 
 # Fechar a conexão
 cursor.close()

@@ -1,12 +1,14 @@
 import os
 import pandas as pd
 import psycopg2
+from constants import DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_USER
 
 MAIN_PATH = "C:/Users/vitor/Downloads"
 FILE = "geracao"
 CHUNK_SIZE = 500_000
 
-conn = psycopg2.connect("dbname='etal' user='postgres' password='postgres' host='localhost' port='5432'")
+# conn = psycopg2.connect(f"dbname={DB_PORT} user='postgres' password='postgres' host='localhost' port='5432'")
+conn = psycopg2.connect(f"dbname={DB_NAME} user={DB_USER} password={DB_PASSWORD} host={DB_HOST} port={DB_PORT}")
 cursor = conn.cursor()
 
 for i, chunk in enumerate(pd.read_csv(f"{MAIN_PATH}/{FILE}", chunksize=CHUNK_SIZE)):

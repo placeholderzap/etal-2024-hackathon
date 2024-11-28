@@ -33,7 +33,7 @@ class CidadeRepository:
             print(f"Erro ao buscar cidades: {e}")
             return None
         
-    def get_usinas_from_cidade(self, id_cidade: int):
+    def get_usinas_from_cidade(self, id_cidade: int, limit: int):
         try:
             query = text(f""" SELECT 
                                 u.id as usina_id,
@@ -47,7 +47,7 @@ class CidadeRepository:
                                 JOIN estado es ON es.id = c.id_estado
                                 JOIN usina u ON u.unidade_consumidora_id = uc.id
                             WHERE c.id = {id_cidade}
-                            LIMIT 1;""")
+                            LIMIT {limit};""")
             result = self.db.session.execute(query)
             return result.fetchall()
         except Exception as e:

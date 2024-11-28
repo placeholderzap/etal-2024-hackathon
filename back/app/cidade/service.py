@@ -14,8 +14,8 @@ class CidadeService:
         
         return []
 
-    def usinas_from_cidade(self, id_cidade: int):
-        usinas = self.repository.get_usinas_from_cidade(id_cidade=id_cidade)
+    def usinas_from_cidade(self, id_cidade: int, limit: int):
+        usinas = self.repository.get_usinas_from_cidade(id_cidade=id_cidade, limit=limit)
         if usinas:
             return [dict(usina_id=u[0], uf=u[1], cidade_id=u[2], cidade=u[3], potencia=u[4]) for u in usinas]
         

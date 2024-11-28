@@ -1,10 +1,11 @@
 import pandas as pd
 from sqlalchemy import create_engine
+from constants import DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_USER
 
 MAIN_PATH = "./raw"
 FILE = "unidade_consumidora"
 
-engine = create_engine('postgresql://postgres:postgres@localhost:5432/etal')
+engine = create_engine(f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}")
 
 chunk_size = 10_000
 

@@ -17,7 +17,8 @@ def get_all():
 
 @cidade_controller.route('/cidades/<int:id_cidade>/usinas', methods=['GET'])
 def usinas_from_cidade(id_cidade):
-    result = cidade_service.usinas_from_cidade(id_cidade=id_cidade)
+    limit = request.args.get('limit', 100, type=int)
+    result = cidade_service.usinas_from_cidade(id_cidade=id_cidade, limit=limit)
     return jsonify(result)
 
 @cidade_controller.route('/cidades/<int:id_usina>/historico', methods=['GET'])

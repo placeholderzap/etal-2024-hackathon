@@ -6,7 +6,6 @@ MAIN_PATH = "C:/Users/vitor/Downloads"
 FILE = "geracao"
 CHUNK_SIZE = 500_000
 
-
 conn = psycopg2.connect("dbname='etal' user='postgres' password='postgres' host='localhost' port='5432'")
 cursor = conn.cursor()
 
@@ -26,5 +25,3 @@ for i, chunk in enumerate(pd.read_csv(f"{MAIN_PATH}/{FILE}", chunksize=CHUNK_SIZ
 
 cursor.close()
 conn.close()
-
-print("Processamento finalizado.")

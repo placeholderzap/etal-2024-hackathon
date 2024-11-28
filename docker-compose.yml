@@ -1,16 +1,28 @@
 services:
   postgres:
-    image: postgres:15 # Utilize a versão desejada do PostgreSQL
-    container_name: postgres_local
-    restart: always
-    ports:
-      - "5432:5432" # Mapeia a porta 5432 do container para a máquina local
+    shm_size: 1gb
+    image: postgres:15
     environment:
-      POSTGRES_USER: postgres # Substitua pelo usuário desejado
-      POSTGRES_PASSWORD: postgres # Substitua pela senha desejada
-      POSTGRES_DB: etal # Nome do banco que será criado
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: etal
+    ports:
+      - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data # Persistência dos dados
+      - postgres_data:/var/lib/postgresql/data
+    command: >
+      postgres
+      -c work_mem=256MB
+      -c maintenance_work_mem=256MB
+      -c temp_file_limit=10GB
+      -c temp_buffers=64MB
+    deploy:
+      resources:
+        limits:
+          memory: 8G
+        reservations:
+          memory: 4G
 
 volumes:
   postgres_data:
+    driver: local

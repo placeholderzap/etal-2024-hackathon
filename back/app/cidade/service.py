@@ -20,17 +20,6 @@ class CidadeService:
             return [dict(usina_id=u[0], uf=u[1], cidade_id=u[2], cidade=u[3], potencia=u[4]) for u in usinas]
         
         return []
-    
-    def get_detalhes_cidade(self, id_cidade: int):
-        detalhes_cidade = self.repository.get_details_from_cidade(id_cidade=id_cidade)
-        if detalhes_cidade:
-            return [
-                dict(uf=d[0], id_cidade=d[1], regiao=d[2], denominacao=d[3], cidade=d[4], potencia=d[5], media_geracao=d[6], media_prognostico=d[7])
-                for d in detalhes_cidade
-            ]
-        
-        return []
-
 
     def get_all(self, limit: int, offset: int, search: str, region: str):
         cidades = self.repository.get_all(limit=limit, offset=offset, search=search, region=region)

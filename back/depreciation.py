@@ -8,7 +8,7 @@ conn = psycopg2.connect("dbname='etal' user='postgres' password='postgres' host=
 cursor = conn.cursor()
 
 # Definir o ID da usina e o ano atual
-usina_id = 93014
+usina_id = int(input("Insira o ID da usina: "))
 ano_atual = datetime.datetime.now().year
 
 # Inicializar o mapper para armazenar as somas
@@ -112,7 +112,7 @@ print("Resultados do mapeamento de geração por ano:")
 print(mapper)
 
 # Criar gráficos de análise
-plt.figure(figsize=(10, 5))
+plt.figure(figsize=(12, 6))
 
 # Gráfico de Geração Real vs Geração Esperada
 plt.subplot(1, 2, 1)
@@ -120,6 +120,7 @@ plt.plot(anos, geracao_real, label="Geração Real", marker='o')
 plt.plot(anos, geracao_esperada, label="Geração Esperada", marker='x')
 plt.xlabel('Ano')
 plt.ylabel('Geração (kWh)')
+plt.xticks(anos)  # Adiciona os anos reais como rótulos no eixo x
 plt.title('Geração Real vs Geração Esperada')
 plt.legend()
 
@@ -128,9 +129,12 @@ plt.subplot(1, 2, 2)
 plt.plot(anos[1:], desvios_percentuais[1:], label="Desvio Percentual", color='red', marker='s')
 plt.xlabel('Ano')
 plt.ylabel('Desvio Percentual (%)')
+plt.xticks(anos[1:])  # Adiciona os anos reais como rótulos no eixo x
 plt.title('Desvio Percentual ao Longo dos Anos')
 plt.legend()
 
-# Exibir os gráficos
+# Ajustar o layout dos gráficos para melhor exibição
 plt.tight_layout()
+
+# Exibir os gráficos
 plt.show()
